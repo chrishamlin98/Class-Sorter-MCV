@@ -111,16 +111,16 @@ public class View extends JFrame implements ActionListener {
 		add(okButton, gc);
 
 		okButton.addActionListener(this);
-		
+
 		// Database db = new Database();
 		// Database db = Database.getInstance();
-		
+
 		addWindowListener(new WindowAdapter() {
-			
+
 			@Override
 			public void windowOpened(WindowEvent e) {
 				try {
-					MyConnection.getInstance().connect();
+					((MyConnection) MyConnection.getInstance()).connect();
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(View.this, "Unable to connect to database.",
 							"Error", JOptionPane.WARNING_MESSAGE);
@@ -132,7 +132,7 @@ public class View extends JFrame implements ActionListener {
 			public void windowClosing(WindowEvent e) {
 				MyConnection.getInstance().disconnect();
 			}
-			
+
 		});
 
 		setSize(600, 500);
