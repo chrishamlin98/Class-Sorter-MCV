@@ -26,10 +26,10 @@ public class View extends JFrame implements ActionListener {
 	private JPasswordField passField;
 	private JPasswordField repeatPassField;
 
-	private LoginListener loginListener;
+	private CreateUserListener loginListener;
 
 	public View(Model model) {
-		super("Class Sorter");
+		super("MVC Demo");
 
 		this.model = model;
 
@@ -120,7 +120,7 @@ public class View extends JFrame implements ActionListener {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				try {
-					((MyConnection) MyConnection.getInstance()).connect();
+					MyConnection.getInstance().connect();
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(View.this, "Unable to connect to database.",
 							"Error", JOptionPane.WARNING_MESSAGE);
@@ -149,20 +149,20 @@ public class View extends JFrame implements ActionListener {
 		if (password.equals(repeat)) {
 			String name = nameField.getText();
 
-			fireLoginEvent(new LoginFormEvent(name, password));
+			fireLoginEvent(new CreateUserEvent(name, password));
 		} else {
 			JOptionPane.showMessageDialog(this, "Passwords do not match.",
 					"Error", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
-	public void setLoginListener(LoginListener loginListener) {
+	public void setLoginListener(CreateUserListener loginListener) {
 		this.loginListener = loginListener;
 	}
 
-	public void fireLoginEvent(LoginFormEvent event) {
+	public void fireLoginEvent(CreateUserEvent event) {
 		if (loginListener != null) {
-			loginListener.loginPerformed(event);
+			loginListener.userCreated(event);
 		}
 	}
 

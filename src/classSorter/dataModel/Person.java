@@ -4,9 +4,20 @@ public class Person {
 	private int id;
 	private String name;
 	private String password;
-	
+
 	public Person() {
-	
+
+	}
+
+	public Person(String name, String password) {
+		this.name = name;
+		this.password = password;
+	}
+
+	public Person(int id, String name, String password) {
+		this.id = id;
+		this.name = name;
+		this.password = password;
 	}
 
 	public int getId() {
@@ -32,7 +43,6 @@ public class Person {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
+
+
 }
