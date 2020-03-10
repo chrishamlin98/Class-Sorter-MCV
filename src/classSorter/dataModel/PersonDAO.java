@@ -9,33 +9,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- *  One DAO class person or view
- *
- *  Every entity that you want to put in or take out of a
- *  database has a DAO object
- *
- *  CRUD - Create, retrieve, update. delete
+ * One DAO class person table or view
+ * CRUD - Create, retrieve, update, delete
  */
 
 public class PersonDAO {
 
-	public void addPerson(Person person) throws SQLException {
+	public int addPerson(Person person) throws SQLException {
 
 		Connection conn = MyConnection.getInstance().getConnection();
 
-		PreparedStatement p = conn.prepareStatement("insert into people (name, password) values (?,?)");
+		PreparedStatement p = conn
+				.prepareStatement("insert into people (name, password) values (?,?)");
 
 		p.setString(1, person.getName());
 		p.setString(2, person.getPassword());
 
-		p.executeUpdate();
+		int updated = p.executeUpdate();
 
 		p.close();
 
+		return updated;
 	}
 
-	public Person getPerson(int id) {
-		return null;
+	public Person getPerson(int id) throws SQLException {
+		Connection conn = MyConnection.getInstance().getConnection();
+
+		String sql = "select id, name, password from people where id=? order by id";
+		PreparedStatement selectStatement = conn.prepareStatement(sql);
+
+		selectStatement.setInt(1, id);
+
+		ResultSet results = selectStatement.executeQuery();
+
+		Person person = null;
+
+		if (results.next()) {
+			String name = results.getString("name");
+			String password = results.getString("password");
+
+			person = new Person(id, name, password);
+		}
+
+		results.close();
+		selectStatement.close();
+
+		return person;
 	}
 
 	public List<Person> getPeople() throws SQLException {
@@ -49,7 +68,7 @@ public class PersonDAO {
 
 		ResultSet results = selectStatement.executeQuery(sql);
 
-		while(results.next()) {
+		while (results.next()) {
 			int id = results.getInt("id");
 			String name = results.getString("name");
 			String password = results.getString("password");
@@ -64,11 +83,48 @@ public class PersonDAO {
 		return people;
 	}
 
-	public void updatePerson(Person person) {
+	public int updatePerson(Person person) throws SQLException {
+		Connection conn = MyConnection.getInstance().getConnection();
 
+		PreparedStatement p = conn
+				.prepareStatement("update people set name=?, password=? where id=?");
+
+		p.setString(1, person.getName());
+		p.setString(2, person.getPassword());
+		p.setInt(3, person.getId());
+
+		int updated = p.executeUpdate();
+
+		p.close();
+
+		return updated;
 	}
 
-	public void deletePerson(int id) {
+	public int deletePerson(int id) throws SQLException {
+		Connection conn = MyConnection.getInstance().getConnection();
 
+		PreparedStatement p = conn
+				.prepareStatement("delete from people where id=?");
+
+		p.setInt(1, id);
+
+		int deleted = p.executeUpdate();
+
+		p.close();
+
+		return deleted;
+	}
+
+	public int deleteAll() throws SQLException {
+		Connection conn = MyConnection.getInstance().getConnection();
+
+		PreparedStatement p = conn
+				.prepareStatement("delete from people");
+
+		int deleted = p.executeUpdate();
+
+		p.close();
+
+		return deleted;
 	}
 }

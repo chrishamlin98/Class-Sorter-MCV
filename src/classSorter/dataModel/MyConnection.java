@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class MyConnection {
 
-	// Creating instances for my DB swing utility (VIDEO BEANS @ 0:44)
+	// Creating instances for my DB swing utility
 
 	private static MyConnection instance = new MyConnection();
 
