@@ -1,3 +1,6 @@
+/* This is all of the code I experimented with that still works in different ways
+
+
 package classSorter.dataModel;
 import java.sql.*;
 
@@ -60,7 +63,6 @@ public class Driver {
 
 }			
 			
-/* This is all of the code I experimented with that still works in different ways
 
 
 **		
